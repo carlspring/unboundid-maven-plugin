@@ -1,0 +1,38 @@
+dn: dc=carlspring,dc=com
+objectClass: top
+objectClass: domain
+dc: server
+
+dn: cn=Users,dc=carlspring,dc=com
+changetype: add
+objectClass: posixGroup
+objectClass: top
+cn: Users
+gidNumber: 1001
+
+dn: cn=Martin Todorov,cn=Users,dc=carlspring,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: top
+cn: Martin Todorov
+givenName: Martin
+sn: Todorov
+homeDirectory: /home/mtodorov
+gidNumber: 1000
+uid: mtodorov
+uidNumber: 1001
+userPassword: {MD5}X03MO1qnZdYdgyfeuILPmQ==
+
+dn: cn=Steve Todorov,cn=Users,dc=carlspring,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: top
+loginShell: /bin/sh
+cn: Steve Todorov
+givenName: Steve
+sn: Todorov
+homeDirectory: /home/stodorov
+gidNumber: 1000
+uid: stodorov
+uidNumber: 1002
+userPassword: {MD5}FhCDh0PMkOPk/dp0goLZuA==
