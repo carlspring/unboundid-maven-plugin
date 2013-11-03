@@ -34,7 +34,7 @@ public abstract class AbstractUnboundIDMojo
     public String basedir;
 
     /**
-     * The port to start Derby on.
+     * The port to use when listening for connections.
      */
     @Parameter(property = "ldap.port", defaultValue = "10389")
     private int port;
@@ -53,6 +53,12 @@ public abstract class AbstractUnboundIDMojo
 
     @Parameter(property = "ldap.baseDN", required = true)
     private String baseDn;
+
+    @Parameter(property = "ldap.ssl", defaultValue = "false")
+    private boolean useSSL;
+
+    @Parameter(property = "ldap.ssl.tls", defaultValue = "false")
+    private boolean useTLS;
 
 
     public MavenProject getProject()
@@ -113,6 +119,26 @@ public abstract class AbstractUnboundIDMojo
     public void setBaseDn(String baseDn)
     {
         this.baseDn = baseDn;
+    }
+
+    public boolean useSSL()
+    {
+        return useSSL;
+    }
+
+    public void setUseSSL(boolean useSSL)
+    {
+        this.useSSL = useSSL;
+    }
+
+    public boolean useTLS()
+    {
+        return useTLS;
+    }
+
+    public void setUseTLS(boolean useTLS)
+    {
+        this.useTLS = useTLS;
     }
 
 }
