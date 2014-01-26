@@ -40,6 +40,12 @@ public abstract class AbstractUnboundIDMojo
     private int port;
 
     /**
+     * The port to use when listening for SSL connections.
+     */
+    @Parameter(property = "ldap.port.ssl", defaultValue = "10636")
+    private int portSSL;
+
+    /**
      * The username to use when authenticating.
      */
     @Parameter(property = "ldap.username", defaultValue = "admin")
@@ -60,6 +66,15 @@ public abstract class AbstractUnboundIDMojo
     @Parameter(property = "ldap.ssl.tls", defaultValue = "false")
     private boolean useTLS;
 
+    @Parameter(property = "ldap.keystore.file")
+    private String keyStorePath;
+
+    @Parameter(property = "ldap.keystore.password")
+    private String keyStorePassword;
+
+    @Parameter(property = "ldap.trust")
+    private String trustStorePath;
+
 
     public MavenProject getProject()
     {
@@ -79,6 +94,16 @@ public abstract class AbstractUnboundIDMojo
     public void setPort(int port)
     {
         this.port = port;
+    }
+
+    public int getPortSSL()
+    {
+        return portSSL;
+    }
+
+    public void setPortSSL(int portSSL)
+    {
+        this.portSSL = portSSL;
     }
 
     public String getUsername()
@@ -139,6 +164,36 @@ public abstract class AbstractUnboundIDMojo
     public void setUseTLS(boolean useTLS)
     {
         this.useTLS = useTLS;
+    }
+
+    public String getKeyStorePath()
+    {
+        return keyStorePath;
+    }
+
+    public void setKeyStorePath(String keyStorePath)
+    {
+        this.keyStorePath = keyStorePath;
+    }
+
+    public String getKeyStorePassword()
+    {
+        return keyStorePassword;
+    }
+
+    public void setKeyStorePassword(String keyStorePassword)
+    {
+        this.keyStorePassword = keyStorePassword;
+    }
+
+    public String getTrustStorePath()
+    {
+        return trustStorePath;
+    }
+
+    public void setTrustStorePath(String trustStorePath)
+    {
+        this.trustStorePath = trustStorePath;
     }
 
 }

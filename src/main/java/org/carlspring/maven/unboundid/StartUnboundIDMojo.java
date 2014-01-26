@@ -16,10 +16,17 @@ package org.carlspring.maven.unboundid;
  * limitations under the License.
  */
 
+import java.io.File;
+import java.security.GeneralSecurityException;
+
 import com.unboundid.ldap.listener.InMemoryDirectoryServer;
 import com.unboundid.ldap.listener.InMemoryDirectoryServerConfig;
 import com.unboundid.ldap.listener.InMemoryListenerConfig;
-import com.unboundid.ldap.sdk.*;
+import com.unboundid.ldap.sdk.LDAPException;
+import com.unboundid.util.ssl.KeyStoreKeyManager;
+import com.unboundid.util.ssl.SSLUtil;
+import com.unboundid.util.ssl.TrustAllTrustManager;
+import com.unboundid.util.ssl.TrustStoreTrustManager;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -50,6 +57,27 @@ public class StartUnboundIDMojo
             config.setSchema(null);
             config.setListenerConfigs(new InMemoryListenerConfig(getBaseDn(), null, getPort(), null, null, null));
 
+            if (getPortSSL() > 0)
+            {
+                // As explained here (by Neil Wilson from the UnboundId team):
+                // http://stackoverflow.com/questions/19713967/adding-an-ssl-listener-to-unboundid
+
+                System.out.println("Using keystore:   " + new File(getKeyStorePath()).getAbsolutePath());
+                System.out.println("Using truststore: " + new File(getTrustStorePath()).getAbsolutePath());
+
+                final SSLUtil serverSSLUtil = new SSLUtil(new KeyStoreKeyManager(getKeyStorePath(),
+                                                                                 getKeyStorePassword().toCharArray(),
+                                                                                 "JKS",
+                                                                                 "localhost"),
+                                                          new TrustStoreTrustManager(getTrustStorePath()));
+                final SSLUtil clientSSLUtil = new SSLUtil(new TrustAllTrustManager());
+
+                config.setListenerConfigs(InMemoryListenerConfig.createLDAPSConfig("LDAPS",
+                                                                                   null,
+                                                                                   getPortSSL(),
+                                                                                   serverSSLUtil.createSSLServerSocketFactory(),
+                                                                                   clientSSLUtil.createSSLSocketFactory()));
+            }
 
             // Create the directory server instance, populate it with data from the
             // "test-data.ldif" file, and start listening for client connections.
@@ -73,6 +101,10 @@ public class StartUnboundIDMojo
             // ds.shutDown(true);
         }
         catch (LDAPException e)
+        {
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
         {
             throw new MojoExecutionException(e.getMessage(), e);
         }
