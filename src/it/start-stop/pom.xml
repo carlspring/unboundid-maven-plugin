@@ -27,6 +27,7 @@
                             <ldifFiles>
                                 <ldifFile>src/test/resources/ldap/unboundid.ldif</ldifFile>
                             </ldifFiles>
+                            <port>40389</port>
                         </configuration>
                     </execution>
                     <!--

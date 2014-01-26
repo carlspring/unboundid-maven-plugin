@@ -37,7 +37,7 @@ public class LDAPTest
         Hashtable<String, String> env = new Hashtable<String, String>();
         env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
         // TODO: Make this configurable:
-        env.put(Context.PROVIDER_URL, "ldap://localhost:10389/");
+        env.put(Context.PROVIDER_URL, "ldap://localhost:40389/");
         // TODO: Make this configurable:
         env.put(Context.SECURITY_AUTHENTICATION, "simple");
 

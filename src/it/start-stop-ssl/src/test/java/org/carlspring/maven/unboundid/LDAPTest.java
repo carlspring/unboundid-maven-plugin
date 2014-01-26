@@ -22,6 +22,7 @@ import javax.naming.NamingException;
 import javax.naming.directory.*;
 import java.util.Hashtable;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static junit.framework.Assert.assertTrue;
@@ -43,13 +44,24 @@ public class LDAPTest
         System.setProperty("javax.net.ssl.keyStorePassword", "password");
     }
 
+    @After
+    public void tearDown()
+            throws Exception
+    {
+        // Make sure we're using the proper trust and key stores and pass in their credentials
+        System.getProperties().remove("javax.net.ssl.trustStore");
+        System.getProperties().remove("javax.net.ssl.trustStorePassword");
+        System.getProperties().remove("javax.net.ssl.keyStore");
+        System.getProperties().remove("javax.net.ssl.keyStorePassword");
+    }
+
     private InitialDirContext getContext()
             throws NamingException
     {
         Hashtable<String, String> env = new Hashtable<String, String>();
         env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
         // TODO: Make this configurable:
-        env.put(Context.PROVIDER_URL, "ldaps://localhost:10636/");
+        env.put(Context.PROVIDER_URL, "ldaps://localhost:40636/");
         // TODO: Make this configurable:
         env.put(Context.SECURITY_AUTHENTICATION, "simple");
         env.put(Context.SECURITY_PROTOCOL, "ssl");

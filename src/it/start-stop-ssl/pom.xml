@@ -39,7 +39,8 @@
                             <keyStorePath>src/main/resources/ldap/keystore.jks</keyStorePath>
                             <keyStorePassword>password</keyStorePassword>
                             <trustStorePath>src/main/resources/ldap/truststore.jks</trustStorePath>
-                            <portSSL>10636</portSSL>
+                            <portSSL>40636</portSSL>
+                            <useSSL>true</useSSL>
                         </configuration>
                     </execution>
                     <!--
