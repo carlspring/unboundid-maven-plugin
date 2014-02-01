@@ -34,6 +34,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 /**
  * @author Martin Todorov (carlspring@gmail.com)
+ * @author Neil A. Wilson
  */
 @Mojo(name = "start", requiresProject = false)
 public class StartUnboundIDMojo
@@ -50,12 +51,15 @@ public class StartUnboundIDMojo
     {
         try
         {
+            final ShutDownExtendedOperationHandler shutDownHandler = new ShutDownExtendedOperationHandler();
+
             // Create the configuration to use for the server.
             InMemoryDirectoryServerConfig config = new InMemoryDirectoryServerConfig(getBaseDn());
             config.addAdditionalBindCredentials("cn=" + getUsername(), getPassword());
             // TODO: Maybe parameterize this:
             config.setSchema(null);
             config.setListenerConfigs(new InMemoryListenerConfig(getBaseDn(), null, getPort(), null, null, null));
+            config.addExtendedOperationHandler(shutDownHandler);
 
             if (useSSL())
             {
@@ -82,6 +86,8 @@ public class StartUnboundIDMojo
             // Create the directory server instance, populate it with data from the
             // "test-data.ldif" file, and start listening for client connections.
             InMemoryDirectoryServer ds = new InMemoryDirectoryServer(config);
+
+            shutDownHandler.setInMemoryDirectoryServer(ds);
 
             if (ldifFiles != null)
             {

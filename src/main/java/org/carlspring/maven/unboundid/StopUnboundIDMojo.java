@@ -16,16 +16,15 @@ package org.carlspring.maven.unboundid;
  * limitations under the License.
  */
 
+import com.unboundid.ldap.sdk.LDAPConnection;
+import com.unboundid.ldap.sdk.LDAPException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 /**
  * @author Martin Todorov (carlspring@gmail.com)
+ * @author Neil A. Wilson
  */
 @Mojo(name = "stop", requiresProject = false)
 public class StopUnboundIDMojo
@@ -36,7 +35,16 @@ public class StopUnboundIDMojo
     public void execute()
             throws MojoExecutionException, MojoFailureException
     {
-        // TODO: Implement
+        try
+        {
+            final LDAPConnection connection = new LDAPConnection("localhost", getPort());
+            connection.processExtendedOperation("1.2.3.4.5.6.7.899999999");
+            connection.close();
+        }
+        catch (LDAPException e)
+        {
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
     }
 
 }
