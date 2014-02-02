@@ -61,13 +61,16 @@ public class StartUnboundIDMojo
             config.setListenerConfigs(new InMemoryListenerConfig(getBaseDn(), null, getPort(), null, null, null));
             config.addExtendedOperationHandler(shutDownHandler);
 
+            System.out.println("Starting UnboundID...");
+
             if (useSSL())
             {
                 // As explained here (by Neil Wilson from the UnboundId team):
                 // http://stackoverflow.com/questions/19713967/adding-an-ssl-listener-to-unboundid
 
-                System.out.println("Using keystore:   " + new File(getKeyStorePath()).getAbsolutePath());
-                System.out.println("Using truststore: " + new File(getTrustStorePath()).getAbsolutePath());
+                System.out.println("   Using SSL.");
+                System.out.println("   Using keystore:   " + new File(getKeyStorePath()).getAbsolutePath());
+                System.out.println("   Using truststore: " + new File(getTrustStorePath()).getAbsolutePath());
 
                 final SSLUtil serverSSLUtil = new SSLUtil(new KeyStoreKeyManager(getKeyStorePath(),
                                                                                  getKeyStorePassword().toCharArray(),
@@ -84,7 +87,7 @@ public class StartUnboundIDMojo
             }
 
             // Create the directory server instance, populate it with data from the
-            // "test-data.ldif" file, and start listening for client connections.
+            // LDIF file, and start listening for client connections.
             InMemoryDirectoryServer ds = new InMemoryDirectoryServer(config);
 
             shutDownHandler.setInMemoryDirectoryServer(ds);
@@ -93,14 +96,14 @@ public class StartUnboundIDMojo
             {
                 for (String ldifFile : ldifFiles)
                 {
-                    getLog().debug("Importing " + ldifFile);
+                    System.out.println("   Importing " + ldifFile + "...");
                     ds.importFromLDIF(true, ldifFile);
                 }
             }
 
-            System.out.println("Starting UnboundID...");
-
             ds.startListening();
+
+            System.out.println("   Accepting connections on port " + (useSSL() ? getPortSSL() : getPort()) + ".");
 
             // Disconnect from the server and cause the server to shut down.
             // connection.close();

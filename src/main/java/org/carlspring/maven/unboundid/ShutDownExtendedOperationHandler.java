@@ -20,13 +20,13 @@ public final class ShutDownExtendedOperationHandler
 
     private volatile InMemoryDirectoryServer server;
 
+
     public ShutDownExtendedOperationHandler()
     {
         server = null;
     }
 
-    public void setInMemoryDirectoryServer(
-                                                  final InMemoryDirectoryServer server)
+    public void setInMemoryDirectoryServer(final InMemoryDirectoryServer server)
     {
         this.server = server;
     }
@@ -41,23 +41,34 @@ public final class ShutDownExtendedOperationHandler
         return Arrays.asList("1.2.3.4.5.6.7.899999999");
     }
 
-    public ExtendedResult processExtendedOperation(
-                                                          final InMemoryRequestHandler handler,
-                                                          final int messageID,
-                                                          final ExtendedRequest request)
+    public ExtendedResult processExtendedOperation(final InMemoryRequestHandler handler,
+                                                   final int messageID,
+                                                   final ExtendedRequest request)
     {
         if (server == null)
         {
-            return new ExtendedResult(messageID, ResultCode.OTHER,
+            return new ExtendedResult(messageID,
+                                      ResultCode.OTHER,
                                       "The extended operation handler does not have a " +
                                       "handle to the server to shut down.",
-                                      null, null, null, null, null);
+                                      null,
+                                      null,
+                                      null,
+                                      null,
+                                      null);
         }
         else
         {
             server.shutDown(false);
-            return new ExtendedResult(messageID, ResultCode.SUCCESS,
-                                      null, null, null, null, null, null);
+            return new ExtendedResult(messageID,
+                                      ResultCode.SUCCESS,
+                                      null,
+                                      null,
+                                      null,
+                                      null,
+                                      null,
+                                      null);
         }
     }
+
 }
