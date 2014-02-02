@@ -16,8 +16,12 @@ package org.carlspring.maven.unboundid;
  * limitations under the License.
  */
 
+import java.security.GeneralSecurityException;
+
 import com.unboundid.ldap.sdk.LDAPConnection;
 import com.unboundid.ldap.sdk.LDAPException;
+import com.unboundid.util.ssl.SSLUtil;
+import com.unboundid.util.ssl.TrustAllTrustManager;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -37,11 +41,29 @@ public class StopUnboundIDMojo
     {
         try
         {
-            final LDAPConnection connection = new LDAPConnection("localhost", getPort());
+            System.out.println("Stopping the UnboundID server on port " + (useSSL() ? getPortSSL() : getPort()) + "... ");
+
+            LDAPConnection connection;
+            if (useSSL())
+            {
+                final SSLUtil sslUtil = new SSLUtil(new TrustAllTrustManager());
+                connection = new LDAPConnection(sslUtil.createSSLSocketFactory(), "localhost", getPortSSL());
+            }
+            else
+            {
+                connection = new LDAPConnection("localhost", getPort());
+            }
+
             connection.processExtendedOperation("1.2.3.4.5.6.7.899999999");
             connection.close();
+
+            System.out.println("UnboundID service stopped.");
         }
         catch (LDAPException e)
+        {
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
+        catch (GeneralSecurityException e)
         {
             throw new MojoExecutionException(e.getMessage(), e);
         }

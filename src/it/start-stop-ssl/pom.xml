@@ -13,6 +13,25 @@
                 <artifactId>unboundid-maven-plugin</artifactId>
                 <version>@project.version@</version>
 
+                <configuration>
+                    <baseDn>dc=carlspring,dc=com</baseDn>
+
+                    <!-- Created with:
+                         keytool -genkey -alias localhost -keyalg RSA -keystore src/it/start-stop-ssl/src/main/resources/ldap/keystore.jks -keysize 2048
+                         keytool -export -alias localhost -file src/it/start-stop-ssl/src/main/resources/ldap/localhost-client.cer -keystore src/it/start-stop-ssl/src/main/resources/ldap/keystore.jks
+                         keytool -import -v -trustcacerts -alias localhost -file src/it/start-stop-ssl/src/main/resources/ldap/localhost-client.cer -keystore src/it/start-stop-ssl/src/main/resources/ldap/truststore.jks
+
+                         For more details, check:
+                         - http://www.sslshopper.com/article-most-common-java-keytool-keystore-commands.html
+                         - http://docs.continuent.com/tungsten-replicator-2.2/deployment-ssl-stores.html
+                    -->
+                    <keyStorePath>src/main/resources/ldap/keystore.jks</keyStorePath>
+                    <keyStorePassword>password</keyStorePassword>
+                    <trustStorePath>src/main/resources/ldap/truststore.jks</trustStorePath>
+                    <portSSL>40636</portSSL>
+                    <useSSL>true</useSSL>
+                </configuration>
+
                 <executions>
                     <execution>
                         <id>unboundid-start</id>
@@ -23,27 +42,11 @@
                         </goals>
 
                         <configuration>
-                            <baseDn>dc=carlspring,dc=com</baseDn>
                             <ldifFiles>
                                 <ldifFile>src/test/resources/ldap/unboundid.ldif</ldifFile>
                             </ldifFiles>
-                            <!-- Created with:
-                                 keytool -genkey -alias localhost -keyalg RSA -keystore src/it/start-stop-ssl/src/main/resources/ldap/keystore.jks -keysize 2048
-                                 keytool -export -alias localhost -file src/it/start-stop-ssl/src/main/resources/ldap/localhost-client.cer -keystore src/it/start-stop-ssl/src/main/resources/ldap/keystore.jks
-                                 keytool -import -v -trustcacerts -alias localhost -file src/it/start-stop-ssl/src/main/resources/ldap/localhost-client.cer -keystore src/it/start-stop-ssl/src/main/resources/ldap/truststore.jks
-
-                                 For more details, check:
-                                 - http://www.sslshopper.com/article-most-common-java-keytool-keystore-commands.html
-                                 - http://docs.continuent.com/tungsten-replicator-2.2/deployment-ssl-stores.html
-                            -->
-                            <keyStorePath>src/main/resources/ldap/keystore.jks</keyStorePath>
-                            <keyStorePassword>password</keyStorePassword>
-                            <trustStorePath>src/main/resources/ldap/truststore.jks</trustStorePath>
-                            <portSSL>40636</portSSL>
-                            <useSSL>true</useSSL>
                         </configuration>
                     </execution>
-                    <!--
                     <execution>
                         <id>unboundid-stop</id>
 
@@ -51,15 +54,7 @@
                         <goals>
                             <goal>stop</goal>
                         </goals>
-
-                        <configuration>
-                            <baseDn>dc=carlspring,dc=com</baseDn>
-                            <ldifFiles>
-                                <ldifFile>src/test/resources/ldap/unboundid.ldif</ldifFile>
-                            </ldifFiles>
-                        </configuration>
                     </execution>
-                    -->
                 </executions>
             </plugin>
         </plugins>
