@@ -56,7 +56,6 @@ public class StartUnboundIDMojo
             // Create the configuration to use for the server.
             InMemoryDirectoryServerConfig config = new InMemoryDirectoryServerConfig(getBaseDn());
             config.addAdditionalBindCredentials("cn=" + getUsername(), getPassword());
-            // TODO: Maybe parameterize this:
             config.setSchema(null);
             config.setListenerConfigs(new InMemoryListenerConfig(getBaseDn(), null, getPort(), null, null, null));
             config.addExtendedOperationHandler(shutDownHandler);

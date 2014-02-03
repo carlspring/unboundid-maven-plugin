@@ -60,9 +60,7 @@ public class LDAPTest
     {
         Hashtable<String, String> env = new Hashtable<String, String>();
         env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-        // TODO: Make this configurable:
         env.put(Context.PROVIDER_URL, "ldaps://localhost:40636/");
-        // TODO: Make this configurable:
         env.put(Context.SECURITY_AUTHENTICATION, "simple");
         env.put(Context.SECURITY_PROTOCOL, "ssl");
 
@@ -86,9 +84,7 @@ public class LDAPTest
             ctx = getContext();
 
             // Step 2: Search the directory
-            // TODO: Make this configurable:
             String dn = "dc=carlspring,dc=com";
-            // TODO: Make this configurable:
             String filter = "(&(objectClass=inetOrgPerson)(uid={0}))";
 
             String[] attrIDs = new String[]{ "ou",
@@ -226,8 +222,6 @@ public class LDAPTest
             ctx = getContext();
 
             // Step 2: Search the directory
-            // TODO: Make this configurable:
-
             String[] attrIDs = new String[]{ "member" };
 
             SearchControls controls = new SearchControls();
