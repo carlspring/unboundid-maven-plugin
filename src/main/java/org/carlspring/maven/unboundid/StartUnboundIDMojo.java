@@ -64,11 +64,10 @@ public class StartUnboundIDMojo
 
             if (useSSL())
             {
-                // As explained here (by Neil Wilson from the UnboundId team):
-                // http://stackoverflow.com/questions/19713967/adding-an-ssl-listener-to-unboundid
-
                 validateAndPrintSettings();
 
+                // As explained here (by Neil Wilson from the UnboundId team):
+                // http://stackoverflow.com/questions/19713967/adding-an-ssl-listener-to-unboundid
                 final SSLUtil serverSSLUtil = new SSLUtil(new KeyStoreKeyManager(getKeyStorePath(),
                                                                                  getKeyStorePassword().toCharArray(),
                                                                                  "JKS",
