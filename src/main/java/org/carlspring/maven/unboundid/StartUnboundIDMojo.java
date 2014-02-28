@@ -67,9 +67,7 @@ public class StartUnboundIDMojo
                 // As explained here (by Neil Wilson from the UnboundId team):
                 // http://stackoverflow.com/questions/19713967/adding-an-ssl-listener-to-unboundid
 
-                System.out.println("   Using SSL.");
-                System.out.println("   Using keystore:   " + new File(getKeyStorePath()).getAbsolutePath());
-                System.out.println("   Using truststore: " + new File(getTrustStorePath()).getAbsolutePath());
+                validateAndPrintSettings();
 
                 final SSLUtil serverSSLUtil = new SSLUtil(new KeyStoreKeyManager(getKeyStorePath(),
                                                                                  getKeyStorePassword().toCharArray(),
@@ -115,6 +113,31 @@ public class StartUnboundIDMojo
         catch (GeneralSecurityException e)
         {
             throw new MojoExecutionException(e.getMessage(), e);
+        }
+    }
+
+    private void validateAndPrintSettings()
+            throws MojoFailureException
+    {
+        getLog().info("   Using SSL.");
+        final File keyStoreFile = new File(getKeyStorePath());
+        if (keyStoreFile.exists())
+        {
+            getLog().info("   Using keystore:   " + keyStoreFile.getAbsolutePath());
+        }
+        else
+        {
+            throw new MojoFailureException("Failed to locate keystore: " + keyStoreFile.getAbsoluteFile());
+        }
+
+        final File trustStoreFile = new File(getTrustStorePath());
+        if (trustStoreFile.exists())
+        {
+            getLog().info("   Using truststore: " + trustStoreFile.getAbsolutePath());
+        }
+        else
+        {
+            throw new MojoFailureException("Failed to locate truststore: " + trustStoreFile.getAbsoluteFile());
         }
     }
 
