@@ -25,6 +25,7 @@ import com.unboundid.util.ssl.TrustAllTrustManager;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 /**
  * @author Martin Todorov (carlspring@gmail.com)
@@ -34,6 +35,12 @@ import org.apache.maven.plugins.annotations.Mojo;
 public class StopUnboundIDMojo
         extends AbstractUnboundIDMojo
 {
+
+    /**
+     * Whether to fail, if LittleProxy is not running.
+     */
+    @Parameter(property = "proxy.fail.if.not.running", defaultValue = "true")
+    boolean failIfNotRunning;
 
 
     public void execute()
@@ -61,12 +68,29 @@ public class StopUnboundIDMojo
         }
         catch (LDAPException e)
         {
-            throw new MojoExecutionException(e.getMessage(), e);
+            if (failIfNotRunning && !e.getMessage().contains("Connection refused"))
+            {
+                throw new MojoExecutionException(e.getMessage(), e);
+            }
+            else
+            {
+                getLog().warn("Nothing to shut down, as the LittleProxy service was not running.");
+            }
         }
         catch (GeneralSecurityException e)
         {
             throw new MojoExecutionException(e.getMessage(), e);
         }
+    }
+
+    public boolean isFailIfNotRunning()
+    {
+        return failIfNotRunning;
+    }
+
+    public void setFailIfNotRunning(boolean failIfNotRunning)
+    {
+        this.failIfNotRunning = failIfNotRunning;
     }
 
 }
