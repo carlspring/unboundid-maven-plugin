@@ -74,7 +74,7 @@ public class StopUnboundIDMojo
             }
             else
             {
-                getLog().warn("Nothing to shut down, as the LittleProxy service was not running.");
+                getLog().warn("Nothing to shut down, as the UnboundID service was not running.");
             }
         }
         catch (GeneralSecurityException e)
