@@ -1,7 +1,7 @@
 package org.carlspring.maven.unboundid;
 
 /**
- * Copyright 2013 Carlspring Consulting & Development Ltd.
+ * Copyright 2018 Carlspring Consulting & Development Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
