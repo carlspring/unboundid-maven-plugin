@@ -5,7 +5,7 @@
 
     <groupId>org.carlspring.maven</groupId>
     <artifactId>unboundid-maven-plugin</artifactId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>UnboundID Maven Plugin</name>
@@ -214,7 +214,7 @@
         <connection>scm:git:git@github.com:carlspring/unboundid-maven-plugin.git</connection>
         <url>scm:git:git@github.com:carlspring/unboundid-maven-plugin.git</url>
         <developerConnection>scm:git:git@github.com:carlspring/unboundid-maven-plugin.git</developerConnection>
-      <tag>unboundid-maven-plugin-1.0</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <distributionManagement>
