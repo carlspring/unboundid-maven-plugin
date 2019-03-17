@@ -31,7 +31,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.maven>3.5.4</version.maven>
+        <version.maven>3.6.0</version.maven>
     </properties>
 
     <build>
@@ -147,7 +147,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>23.0</version>
+            <version>24.1.1-jre</version>
         </dependency>
 
         <dependency>
